@@ -4,6 +4,11 @@ Sample app that runs banner, interstitial, video and rewarded video auctions aga
 (`https://prebid.bidotter.com/openrtb2/auction`) with Prebid Mobile SDK 3.4.0 and renders the results
 without an ad server.
 
+## Try it
+
+Install the prebuilt sample from the [latest release](https://github.com/YallaAdX/android-prebid-sdk-demo/releases/latest)
+to see each format without building the project, or build it yourself (see [Run](#run)).
+
 ## Partner integration
 
 Everything BidOtter-specific is in one file:
