@@ -1,6 +1,6 @@
 # BidOtter Prebid SDK test app (Android)
 
-Sample app that runs banner and video auctions against the BidOtter Prebid Server
+Sample app that runs banner, interstitial, video and rewarded video auctions against the BidOtter Prebid Server
 (`https://prebid.bidotter.com/openrtb2/auction`) with Prebid Mobile SDK 3.4.0 and renders the results
 without an ad server.
 
@@ -20,12 +20,21 @@ val banner = BidOtter.banner(context, "BANNER_PLACEMENT_ID", 320, 50, listener)
 container.addView(banner)
 banner.loadAd()
 
-// Fullscreen video: call show() from onAdLoaded
+// Fullscreen ads: call show() from onAdLoaded
+val interstitial = BidOtter.interstitial(activity, "INTERSTITIAL_PLACEMENT_ID", listener)
 val video = BidOtter.videoInterstitial(activity, "VIDEO_PLACEMENT_ID", listener)
-video.loadAd()
+val rewarded = BidOtter.rewardedVideo(activity, "REWARDED_PLACEMENT_ID", rewardedListener)
+interstitial.loadAd()
 ```
 
-[`MainActivity.kt`](app/src/main/java/com/bidotter/prebidtest/MainActivity.kt) is a working example of both.
+| Format | Helper | Listener |
+| --- | --- | --- |
+| Banner | `BidOtter.banner` | `BannerViewListener` |
+| Interstitial (display) | `BidOtter.interstitial` | `InterstitialAdUnitListener` |
+| Interstitial (video) | `BidOtter.videoInterstitial` | `InterstitialAdUnitListener` |
+| Rewarded video | `BidOtter.rewardedVideo` | `RewardedAdUnitListener`; grant the reward in `onUserEarnedReward` |
+
+[`MainActivity.kt`](app/src/main/java/com/bidotter/prebidtest/MainActivity.kt) is a working example of each.
 
 ## What the helper sends
 
@@ -33,15 +42,19 @@ video.loadAd()
 - Per imp: `ext.prebid.bidder.bidotter.placementId`, and `ext.prebid.storedrequest: null` so Prebid Server
   doesn't look the placement up as a stored impression (none are configured).
 - Banner: `banner.w` / `banner.h` in addition to the SDK's `banner.format`; the exchange sizes the creative from them.
-- Video: `ext.prebid.biddercontrols.bidotter.prefmtype = "video"`, because the SDK adds a `banner` object to
-  interstitial imps and the adapter is registered as single-format.
+- Video and rewarded video: `ext.prebid.biddercontrols.bidotter.prefmtype = "video"`, because the SDK adds a
+  `banner` object to fullscreen imps and the adapter is registered as single-format.
 
 ## Test placements
 
-| Format | Placement |
-| --- | --- |
-| Banner | `5poz7emu` |
-| Video | `pf7onnh1` |
+These placements always fill, with BidOtter house ads marked "Test ad".
+
+| Format | Placement | Sizes |
+| --- | --- | --- |
+| Banner | `5poz7emu` | 320x50, 320x100, 300x250, 728x90 |
+| Interstitial (display) | `zssnke42` | 320x480, 480x320, 768x1024 |
+| Interstitial (video) | `pf7onnh1` | portrait and landscape, 6 to 30 seconds |
+| Rewarded video | `3czizw1b` | portrait and landscape, 15 seconds |
 
 ## Run
 

@@ -9,8 +9,10 @@ import org.prebid.mobile.api.data.AdUnitFormat
 import org.prebid.mobile.api.data.InitializationStatus
 import org.prebid.mobile.api.rendering.BannerView
 import org.prebid.mobile.api.rendering.InterstitialAdUnit
+import org.prebid.mobile.api.rendering.RewardedAdUnit
 import org.prebid.mobile.api.rendering.listeners.BannerViewListener
 import org.prebid.mobile.api.rendering.listeners.InterstitialAdUnitListener
+import org.prebid.mobile.api.rendering.listeners.RewardedAdUnitListener
 import java.util.EnumSet
 
 /**
@@ -35,12 +37,14 @@ import java.util.EnumSet
  * container.addView(banner)
  * banner.loadAd()
  *
- * // Fullscreen video: call show() from onAdLoaded
+ * // Fullscreen ads: call show() from onAdLoaded
+ * val interstitial = BidOtter.interstitial(activity, "YOUR_INTERSTITIAL_PLACEMENT_ID", listener)
  * val video = BidOtter.videoInterstitial(activity, "YOUR_VIDEO_PLACEMENT_ID", listener)
- * video.loadAd()
+ * val rewarded = BidOtter.rewardedVideo(activity, "YOUR_REWARDED_PLACEMENT_ID", listener)
+ * interstitial.loadAd()
  * ```
  *
- * Call `destroy()` on banners and interstitials when their screen goes away.
+ * Call `destroy()` on every ad when its screen goes away.
  */
 object BidOtter {
 
@@ -89,6 +93,20 @@ object BidOtter {
         return banner
     }
 
+    /** Fullscreen display (image) ad. Call `loadAd()`, then `show()` once `onAdLoaded` fires. */
+    @JvmStatic
+    @JvmOverloads
+    fun interstitial(
+        activity: Activity,
+        placementId: String,
+        listener: InterstitialAdUnitListener? = null,
+    ): InterstitialAdUnit {
+        val adUnit = InterstitialAdUnit(activity, placementId, EnumSet.of(AdUnitFormat.BANNER))
+        adUnit.setImpOrtbConfig(impConfig(placementId))
+        listener?.let(adUnit::setInterstitialAdUnitListener)
+        return adUnit
+    }
+
     /** Fullscreen video. Call `loadAd()`, then `show()` once `onAdLoaded` fires. */
     @JvmStatic
     @JvmOverloads
@@ -103,6 +121,25 @@ object BidOtter {
         // single-format, so tell Prebid Server which one to keep or it drops the imp.
         adUnit.setGlobalOrtbConfig(preferredMediaType("video"))
         listener?.let(adUnit::setInterstitialAdUnitListener)
+        return adUnit
+    }
+
+    /**
+     * Rewarded video. Call `loadAd()`, then `show()` once `onAdLoaded` fires. Grant the reward
+     * in `onUserEarnedReward`, which fires when the video has played through.
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun rewardedVideo(
+        activity: Activity,
+        placementId: String,
+        listener: RewardedAdUnitListener? = null,
+    ): RewardedAdUnit {
+        val adUnit = RewardedAdUnit(activity, placementId)
+        adUnit.setImpOrtbConfig(impConfig(placementId))
+        // Rewarded imps carry banner and video too; see videoInterstitial.
+        adUnit.setGlobalOrtbConfig(preferredMediaType("video"))
+        listener?.let(adUnit::setRewardedAdUnitListener)
         return adUnit
     }
 

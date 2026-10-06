@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">BidOtter Prebid Test</string>
+    <string name="banner_320x50">Banner\n320x50</string>
+    <string name="banner_320x100">Banner\n320x100</string>
+    <string name="banner_300x250">Banner\n300x250</string>
+    <string name="interstitial">Interstitial</string>
+    <string name="video_interstitial">Video</string>
+    <string name="rewarded_video">Rewarded</string>
 </resources>

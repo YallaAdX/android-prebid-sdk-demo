@@ -24,19 +24,27 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnBanner320"
+            android:id="@+id/btnBanner320x50"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:text="Banner 320x50" />
+            android:text="@string/banner_320x50" />
 
         <Button
-            android:id="@+id/btnBanner300"
+            android:id="@+id/btnBanner320x100"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="@string/banner_320x100" />
+
+        <Button
+            android:id="@+id/btnBanner300x250"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Banner 300x250" />
+            android:text="@string/banner_300x250" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,10 +53,27 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnVideo"
-            android:layout_width="match_parent"
+            android:id="@+id/btnInterstitial"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Video interstitial" />
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="@string/interstitial" />
+
+        <Button
+            android:id="@+id/btnVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="@string/video_interstitial" />
+
+        <Button
+            android:id="@+id/btnRewarded"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/rewarded_video" />
     </LinearLayout>
 
     <FrameLayout
